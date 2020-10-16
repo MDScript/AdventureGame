@@ -1,5 +1,5 @@
 Imports System
-Module Program
+Module Module1
 
     Dim makingChoice As Boolean = True
     Dim CR As String = "mainroom"
@@ -18,7 +18,7 @@ Module Program
                                  {"1", "0", "0", "0", "0", "0", "1"},
                                  {"1", "0", "0", "0", "0", "0", "1"},
                                  {"1", "1", "1", "1", "1", "1", "1"},
-                                 {"riddleroom", "", "", "nothing", "", "", ""}
+                                 {"riddleroom", "placeholder1", "", "nothing", "", "", ""}
         }
 
     Dim RIDDLEROOM As Array = {
@@ -29,7 +29,51 @@ Module Program
                                  {"1", "0", "0", "0", "0", "0", "1"},
                                  {"1", "0", "0", "s", "0", "0", "1"},
                                  {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"nothing", "mainroom", "", "", "", "", ""}
+                                 {"nothing", "mainroom", "", "riddlerslair", "", "", ""}
+        }
+
+    Dim PLACEHOLDER1 As Array = {
+                                 {"1", "1", "1", "0", "1", "1", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"0", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "1", "1", "0", "1", "1", "1"},
+                                 {"mainroom", "nothing", "", "", "", "", ""}
+        }
+
+    Dim RIDDLERSLAIR As Array = {
+                                 {"1", "1", "1", "0", "1", "1", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "0"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "1", "1", "0", "1", "1", "1"},
+                                 {"nothing", "victory", "riddleroom", "maze", "", "", ""}
+        }
+
+    Dim MAZE As Array = {
+                                 {"1", "1", "1", "0", "1", "1", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "1", "1", "1", "1", "1", "1"},
+                                 {"nothing", "nothing", "riddlerslair", "nothing", "", "", ""}
+        }
+
+    Dim VICTORY As Array = {
+                                 {"1", "1", "1", "1", "1", "1", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"0", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "1", "1", "1", "1", "1", "1"},
+                                 {"riddlerslair", "nothing", "nothing", "nothing", "", "", ""}
         }
 
     Function printRoom(ByVal Room As Array)
@@ -45,7 +89,7 @@ Module Program
                 End If
 
                 If r(y, x) = "1" Then
-                    Console.BackgroundColor = ConsoleColor.Blue
+                    Console.BackgroundColor = ConsoleColor.DarkGreen
                 End If
 
                 If r(y, x) = "2" Then
@@ -71,6 +115,7 @@ Module Program
         currentRoom(py, px) = "0"
 
         Select Case keyPress
+
             Case "a"
                 If px = 0 And ROOMS.Item(CR)(3, 0) = "0" Then
                     px = 7
@@ -80,6 +125,7 @@ Module Program
                 If currentRoom(py, px - 1) <> "1" Then
                     px -= 1
                 End If
+
             Case "d"
                 If px = 6 And ROOMS.Item(CR)(3, 6) = "0" Then
                     px = -1
@@ -89,14 +135,27 @@ Module Program
                 If currentRoom(py, px + 1) <> "1" Then
                     px += 1
                 End If
+
             Case "w"
+                If py = 0 And ROOMS.Item(CR)(0, 3) = "0" Then
+                    py = 7
+                    CR = currentRoom(7, 2)
+                    currentRoom = ROOMS.Item(CR)
+                End If
                 If currentRoom(py - 1, px) <> "1" Then
                     py -= 1
                 End If
+
             Case "s"
+                If py = 6 And ROOMS.Item(CR)(6, 3) = "0" Then
+                    py = -1
+                    CR = currentRoom(7, 3)
+                    currentRoom = ROOMS.Item(CR)
+                End If
                 If currentRoom(py + 1, px) <> "1" Then
                     py += 1
                 End If
+
         End Select
 
         currentRoom(py, px) = "2"
@@ -105,8 +164,14 @@ Module Program
 
     Sub Main()
 
+        Minigame.startGame()
+
         ROOMS.Add("mainroom", MAINROOM)
         ROOMS.Add("riddleroom", RIDDLEROOM)
+        ROOMS.Add("placeholder1", PLACEHOLDER1)
+        ROOMS.Add("riddlerslair", RIDDLERSLAIR)
+        ROOMS.Add("victory", VICTORY)
+        ROOMS.Add("maze", MAZE)
 
         Dim toExit As Boolean = False
 
@@ -128,6 +193,7 @@ Module Program
                     makingChoice = False
                 Case "exit"
                     Console.WriteLine(vbCrLf & "[Exiting game]")
+                    toExit = True
                     makingChoice = False
             End Select
 
@@ -140,6 +206,8 @@ Module Program
             moveTo = Nothing
 
             Console.BackgroundColor = ConsoleColor.Black
+            Console.ForegroundColor = ConsoleColor.Green
+
             Console.Clear()
 
             ' Write instructions on how to play the game
@@ -156,9 +224,20 @@ How To Play
 
             printRoom(ROOMS.Item(CR))
 
+            Console.ForegroundColor = ConsoleColor.Black
+            Console.BackgroundColor = ConsoleColor.Black
+
             moveTo = (Console.ReadKey()).KeyChar
 
             handlePlayerMovement(ROOMS.Item(CR), moveTo)
+
+            If LCase(moveTo) = "e" Then
+                Console.BackgroundColor = ConsoleColor.Black
+                Console.ForegroundColor = ConsoleColor.Green
+                Console.WriteLine(vbCrLf & "[Exiting game]")
+                toExit = True
+
+            End If
 
         End While
 
@@ -167,4 +246,88 @@ How To Play
         Console.ReadKey()
 
     End Sub
+End Module
+
+Module Minigame
+
+    Public complete As Boolean = False
+
+    Sub startGame()
+
+        Randomize()
+
+        Dim incorrectBolt() As String = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
+
+        Dim bars As Array = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                             {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
+
+        For BOLT = 0 To 4
+
+            While True
+
+                For segment = 0 To 8
+                    bars(BOLT, segment) = " "
+                Next
+
+                Dim SegementStart As Integer = Int(Rnd() * 5)
+
+                For segment = SegementStart To SegementStart + 4
+
+                    bars(BOLT, segment) = "1"
+
+                    If segment - SegementStart = 2 Then
+                        bars(BOLT, segment) = "2"
+                    End If
+                Next
+
+                For segment = 0 To 8
+                    If bars(BOLT, segment) <> incorrectBolt(segment) Then
+                        Exit While
+                    End If
+                Next
+
+            End While
+
+            For i = 0 To 8
+                Console.Write(bars(BOLT, i))
+            Next
+            Console.WriteLine()
+        Next
+
+        Dim selected_bolt As Integer = 2
+
+        While True
+            Dim input As ConsoleKeyInfo = Console.ReadKey()
+
+            Select Case input.Key
+                Case 38
+                    ' up
+                    Console.WriteLine("up")
+                    Exit Select
+                Case 40
+                    ' down
+                    Console.WriteLine("down")
+                    Exit Select
+                Case 39
+                    ' right
+                    If selected_bolt < 4 Then
+                        selected_bolt += 1
+                    End If
+                    Exit Select
+                Case 37
+                    ' left
+                    If selected_bolt > 0 Then
+                        selected_bolt -= 1
+                    End If
+                    Exit Select
+            End Select
+
+            Console.WriteLine(selected_bolt)
+        End While
+
+    End Sub
+
 End Module
