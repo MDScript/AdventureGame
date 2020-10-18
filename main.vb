@@ -10,70 +10,28 @@ Module Module1
 
     ' room format: room as 7x7 array, bottom row as connecting room ids
 
-    Dim MAINROOM As Array = {
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"0", "0", "0", "2", "0", "0", "0"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "1", "1", "1", "1", "1", "1"},
-                                 {"riddleroom", "placeholder1", "", "nothing", "", "", ""}
+    Dim MAINROOM As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "2", "0", "0", "0"},
+                             {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddleroom", "placeholder1", "", "nothing", "", "", ""}
         }
 
-    Dim RIDDLEROOM As Array = {
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "0"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "s", "0", "0", "1"},
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"nothing", "mainroom", "", "riddlerslair", "", "", ""}
+    Dim RIDDLEROOM As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "0"},
+                               {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "s", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"nothing", "mainroom", "", "riddlerslair", "", "", ""}
         }
 
-    Dim PLACEHOLDER1 As Array = {
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"0", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"mainroom", "nothing", "", "", "", "", ""}
+    Dim PLACEHOLDER1 As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "0", "0", "0", "1"},
+                                 {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"mainroom", "nothing", "", "", "", "", ""}
         }
 
-    Dim RIDDLERSLAIR As Array = {
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "0"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"nothing", "victory", "riddleroom", "maze", "", "", ""}
+    Dim RIDDLERSLAIR As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "p"},
+                                 {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"nothing", "keycode", "riddleroom", "victory", "", "", ""}
         }
 
-    Dim MAZE As Array = {
-                                 {"1", "1", "1", "0", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "1", "1", "1", "1", "1", "1"},
-                                 {"nothing", "nothing", "riddlerslair", "nothing", "", "", ""}
+    Dim VICTORY As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"},
+                         {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"nothing", "nothing", "riddlerslair", "nothing", "", "", ""}
         }
 
-    Dim VICTORY As Array = {
-                                 {"1", "1", "1", "1", "1", "1", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"0", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "1", "1", "1", "1", "1", "1"},
-                                 {"riddlerslair", "nothing", "nothing", "nothing", "", "", ""}
+    Dim KEYCODE As Array = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "0", "0", "0", "1"},
+                            {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddlerslair", "nothing", "nothing", "nothing", "", "", ""}
         }
 
     Function printRoom(ByVal Room As Array)
@@ -81,33 +39,23 @@ Module Module1
         Dim r As Array = Room
 
         For y = 0 To 6
-
             For x = 0 To 6
-
-                If r(y, x) = "0" Then
-                    Console.BackgroundColor = ConsoleColor.Green
-                End If
-
-                If r(y, x) = "1" Then
-                    Console.BackgroundColor = ConsoleColor.DarkGreen
-                End If
-
-                If r(y, x) = "2" Then
-                    Console.BackgroundColor = ConsoleColor.Red
-                End If
-
-                If r(y, x) = "o" Then
-                    Console.BackgroundColor = ConsoleColor.Yellow
-                End If
-
+                Select Case r(y, x)
+                    Case "0"
+                        Console.BackgroundColor = ConsoleColor.Green
+                    Case "1"
+                        Console.BackgroundColor = ConsoleColor.DarkGreen
+                    Case "2"
+                        Console.BackgroundColor = ConsoleColor.Red
+                    Case "o"
+                        Console.BackgroundColor = ConsoleColor.Yellow
+                    Case "p"
+                        Console.BackgroundColor = ConsoleColor.Gray
+                End Select
                 Console.Write("  ")
-
             Next
-
             Console.Write(vbCrLf)
-
         Next
-
     End Function
 
     Function handlePlayerMovement(ByVal currentRoom As Array, ByVal keyPress As Char)
@@ -115,7 +63,6 @@ Module Module1
         currentRoom(py, px) = "0"
 
         Select Case keyPress
-
             Case "a"
                 If px = 0 And ROOMS.Item(CR)(3, 0) = "0" Then
                     px = 7
@@ -125,7 +72,6 @@ Module Module1
                 If currentRoom(py, px - 1) <> "1" Then
                     px -= 1
                 End If
-
             Case "d"
                 If px = 6 And ROOMS.Item(CR)(3, 6) = "0" Then
                     px = -1
@@ -135,7 +81,6 @@ Module Module1
                 If currentRoom(py, px + 1) <> "1" Then
                     px += 1
                 End If
-
             Case "w"
                 If py = 0 And ROOMS.Item(CR)(0, 3) = "0" Then
                     py = 7
@@ -145,7 +90,6 @@ Module Module1
                 If currentRoom(py - 1, px) <> "1" Then
                     py -= 1
                 End If
-
             Case "s"
                 If py = 6 And ROOMS.Item(CR)(6, 3) = "0" Then
                     py = -1
@@ -155,39 +99,34 @@ Module Module1
                 If currentRoom(py + 1, px) <> "1" Then
                     py += 1
                 End If
-
         End Select
+
+        If currentRoom(py, px) = "p" Then
+            Console.ForegroundColor = ConsoleColor.Green
+            Console.WriteLine("You have come across a puzzle! On completion, you will gain access to the room ahead!")
+            Console.ReadKey()
+            Minigame.startGame()
+        End If
 
         currentRoom(py, px) = "2"
 
     End Function
 
     Sub Main()
-
-        Minigame.startGame()
-        Minigame.startGame()
-
-        Console.Clear()
-
         ROOMS.Add("mainroom", MAINROOM)
         ROOMS.Add("riddleroom", RIDDLEROOM)
         ROOMS.Add("placeholder1", PLACEHOLDER1)
         ROOMS.Add("riddlerslair", RIDDLERSLAIR)
+        ROOMS.Add("keycode", KEYCODE)
         ROOMS.Add("victory", VICTORY)
-        ROOMS.Add("maze", MAZE)
 
         Dim toExit As Boolean = False
 
-        ' Start The Story
-
         Console.ForegroundColor = ConsoleColor.Green
-
         Console.WriteLine("Welcome to the adventure game!" & vbCrLf & vbCrLf & " To play, type 'play'" & vbCrLf & " To Exit, type 'exit' or tap 'e' at any point during the game" & vbCrLf)
 
         While makingChoice
-
             Console.Write("> ")
-
             Dim chosenOption As String = Console.ReadLine()
 
             Select Case chosenOption.ToLower()
@@ -199,39 +138,24 @@ Module Module1
                     toExit = True
                     makingChoice = False
             End Select
-
         End While
 
         Dim moveTo As Char = Nothing
 
         While Not toExit
-
             moveTo = Nothing
 
             Console.BackgroundColor = ConsoleColor.Black
             Console.ForegroundColor = ConsoleColor.Green
-
             Console.Clear()
 
-            ' Write instructions on how to play the game
-            Console.WriteLine("
-How To Play
-    - Press 'w', 'a', 's', 'd' to Move
-    - Press 'e' to exit at any point in the game
-    - Press 'i' to access your inventory
-    - Press 'o' to open an object
-    - Press 'y' or 'n' for options Yes or No respectively
-")
-
-            ' display the room the palyer is in
-
+            Console.WriteLine(vbCrLf & "How To Play" & vbCrLf & "    - Press 'w', 'a', 's', 'd' to Move" & vbCrLf & "    - Press 'e' to exit at any point in the game" & vbCrLf & "    - Press 'i' to access your inventory" & vbCrLf & "    - Press 'o' to open an object" & vbCrLf & "    - Press 'y' or 'n' for options Yes or No respectively" & vbCrLf)
             printRoom(ROOMS.Item(CR))
 
             Console.ForegroundColor = ConsoleColor.Black
             Console.BackgroundColor = ConsoleColor.Black
 
             moveTo = (Console.ReadKey()).KeyChar
-
             handlePlayerMovement(ROOMS.Item(CR), moveTo)
 
             If LCase(moveTo) = "e" Then
@@ -239,12 +163,9 @@ How To Play
                 Console.ForegroundColor = ConsoleColor.Green
                 Console.WriteLine(vbCrLf & "[Exiting game]")
                 toExit = True
-
             End If
-
         End While
 
-        ' enter to close
         Console.Write(vbCrLf & "Press Any Key to Close" & vbCrLf & "> ")
         Console.ReadKey()
 
@@ -252,97 +173,60 @@ How To Play
 End Module
 
 Module Minigame
-
     Public complete As Boolean = False
-
     Dim selected_bolt As Integer = 0
-
     Dim incorrectBolt() As String = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
-
     Dim barHeights() As Integer = {0, 0, 0, 0, 0}
-
-    Dim bars As Array = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                         {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
+    Dim bars As Array = {{" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
 
     Sub setup()
         complete = False
-
         selected_bolt = 0
-
         incorrectBolt = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
-
         barHeights = {0, 0, 0, 0, 0}
-
-        bars = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
+        bars = {{" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}, {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
     End Sub
 
     Function shiftBolt(ByVal bolt_index As Integer, ByVal shift As Integer)
-
         Dim temporaryBolt() As String = {" ", " ", " ", " ", " ", " ", " ", " ", " "}
-
-        ' apply shifting logic to the bar
-
-        Try
+        Try ' apply shifting logic to the bar
             For i = 0 To 8
                 If bars(bolt_index, i) <> " " Then
                     temporaryBolt(i + shift) = bars(bolt_index, i)
                 End If
             Next
-
             For i = 0 To 8
                 bars(bolt_index, i) = temporaryBolt(i)
             Next
-
+            barHeights(selected_bolt) += shift
         Catch
-            ' do absolutely nothing
         End Try
-
     End Function
 
     Sub printBolts()
-
         Console.ForegroundColor = ConsoleColor.Green
-        Console.WriteLine("The Cyan dot hovers under the bolt selected, to scroll across the bolts, press the left adn right arrow keys!
-To complete the puzzle, all the red parts must be in line with the green dot!
-In order to move a bolt up or down, use the up and down arrow keys!
- ")
-
-
+        Console.WriteLine("The Cyan dot hovers under the bolt selected, to scroll across the bolts, press the left adn right arrow keys!" & vbCrLf & "To complete the puzzle, all the red parts must be in line with the green dot!" & vbCrLf & "In order to move a bolt up or down, use the up and down arrow keys!" & vbCrLf)
         For row = 0 To 8
-
             Console.Write("  ")
-
             For bolt = 0 To 4
                 If bars(bolt, row) = "1" Then
                     Console.BackgroundColor = ConsoleColor.White
                 ElseIf bars(bolt, row) = "2" Then
-                    If complete Then
+                    If complete Or row = 4 Then
                         Console.BackgroundColor = ConsoleColor.Green
                     Else
                         Console.BackgroundColor = ConsoleColor.Red
                     End If
                 End If
-
                 Console.Write("  ")
                 Console.BackgroundColor = ConsoleColor.Black
                 Console.Write("  ")
-
             Next
-
             If row = 4 Then
                 Console.BackgroundColor = ConsoleColor.Green
                 Console.Write("  ")
             End If
-
             Console.BackgroundColor = ConsoleColor.Black
-
             Console.Write(vbCrLf)
         Next
 
@@ -359,15 +243,11 @@ In order to move a bolt up or down, use the up and down arrow keys!
     End Sub
 
     Sub startGame()
-
-        setup()
-
-        Randomize()
+        setup() ' make sure all variables are reset
+        Randomize() ' set random seed for random number generation
 
         For BOLT = 0 To 4
-
-            While True
-
+            While True ' this loop will execute until the bolt generated is not the same as the correctly positioned bolt
                 For segment = 0 To 8
                     bars(BOLT, segment) = " "
                 Next
@@ -376,9 +256,7 @@ In order to move a bolt up or down, use the up and down arrow keys!
                 barHeights(BOLT) = SegementStart
 
                 For segment = SegementStart To SegementStart + 4
-
                     bars(BOLT, segment) = "1"
-
                     If segment - SegementStart = 2 Then
                         bars(BOLT, segment) = "2"
                     End If
@@ -389,48 +267,31 @@ In order to move a bolt up or down, use the up and down arrow keys!
                         Exit While
                     End If
                 Next
-
             End While
-
         Next
 
         While Not complete
-
             Console.Clear()
-
             printBolts()
-
             Dim input As ConsoleKeyInfo = Console.ReadKey()
 
             Select Case input.Key
-                Case 38
-                    ' up
-                    Console.WriteLine("up")
-
+                Case 38 ' up
                     If barHeights(selected_bolt) > 0 Then
-                        barHeights(selected_bolt) -= 1
                         shiftBolt(selected_bolt, -1)
                     End If
-
                     Exit Select
-                Case 40
-                    ' down
-                    Console.WriteLine("down")
-
+                Case 40 ' down
                     If barHeights(selected_bolt) < 4 Then
-                        barHeights(selected_bolt) += 1
                         shiftBolt(selected_bolt, 1)
                     End If
-
                     Exit Select
-                Case 39
-                    ' right
+                Case 39 ' right
                     If selected_bolt < 4 Then
                         selected_bolt += 1.0
                     End If
                     Exit Select
-                Case 37
-                    ' left
+                Case 37 ' left
                     If selected_bolt > 0 Then
                         selected_bolt -= 1
                     End If
@@ -449,16 +310,10 @@ In order to move a bolt up or down, use the up and down arrow keys!
                 Console.Clear()
                 printBolts()
 
-                Console.WriteLine("
-Well done! you have completed the puzzle!
-Press any key to continue")
-
+                Console.Write(vbCrLf & "Well done! you have completed the puzzle!" & vbCrLf & "Press any key to continue" & vbCrLf & "> ")
                 Console.ReadKey()
 
             End If
-
         End While
-
     End Sub
-
 End Module
