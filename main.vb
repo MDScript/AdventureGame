@@ -165,6 +165,9 @@ Module Module1
     Sub Main()
 
         Minigame.startGame()
+        Minigame.startGame()
+
+        Console.Clear()
 
         ROOMS.Add("mainroom", MAINROOM)
         ROOMS.Add("riddleroom", RIDDLEROOM)
@@ -252,17 +255,114 @@ Module Minigame
 
     Public complete As Boolean = False
 
+    Dim selected_bolt As Integer = 0
+
+    Dim incorrectBolt() As String = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
+
+    Dim barHeights() As Integer = {0, 0, 0, 0, 0}
+
+    Dim bars As Array = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
+
+    Sub setup()
+        complete = False
+
+        selected_bolt = 0
+
+        incorrectBolt = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
+
+        barHeights = {0, 0, 0, 0, 0}
+
+        bars = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " "},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
+    End Sub
+
+    Function shiftBolt(ByVal bolt_index As Integer, ByVal shift As Integer)
+
+        Dim temporaryBolt() As String = {" ", " ", " ", " ", " ", " ", " ", " ", " "}
+
+        ' apply shifting logic to the bar
+
+        Try
+            For i = 0 To 8
+                If bars(bolt_index, i) <> " " Then
+                    temporaryBolt(i + shift) = bars(bolt_index, i)
+                End If
+            Next
+
+            For i = 0 To 8
+                bars(bolt_index, i) = temporaryBolt(i)
+            Next
+
+        Catch
+            ' do absolutely nothing
+        End Try
+
+    End Function
+
+    Sub printBolts()
+
+        Console.ForegroundColor = ConsoleColor.Green
+        Console.WriteLine("The Cyan dot hovers under the bolt selected, to scroll across the bolts, press the left adn right arrow keys!
+To complete the puzzle, all the red parts must be in line with the green dot!
+In order to move a bolt up or down, use the up and down arrow keys!
+ ")
+
+
+        For row = 0 To 8
+
+            Console.Write("  ")
+
+            For bolt = 0 To 4
+                If bars(bolt, row) = "1" Then
+                    Console.BackgroundColor = ConsoleColor.White
+                ElseIf bars(bolt, row) = "2" Then
+                    If complete Then
+                        Console.BackgroundColor = ConsoleColor.Green
+                    Else
+                        Console.BackgroundColor = ConsoleColor.Red
+                    End If
+                End If
+
+                Console.Write("  ")
+                Console.BackgroundColor = ConsoleColor.Black
+                Console.Write("  ")
+
+            Next
+
+            If row = 4 Then
+                Console.BackgroundColor = ConsoleColor.Green
+                Console.Write("  ")
+            End If
+
+            Console.BackgroundColor = ConsoleColor.Black
+
+            Console.Write(vbCrLf)
+        Next
+
+        For i = 0 To 4
+            Console.Write("  ")
+            If i = selected_bolt Then
+                Console.BackgroundColor = ConsoleColor.Cyan
+                Console.Write("  ")
+            Else
+                Console.Write("  ")
+            End If
+            Console.BackgroundColor = ConsoleColor.Black
+        Next
+    End Sub
+
     Sub startGame()
 
+        setup()
+
         Randomize()
-
-        Dim incorrectBolt() As String = {" ", " ", "1", "1", "2", "1", "1", " ", " "}
-
-        Dim bars As Array = {{" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                             {" ", " ", " ", " ", " ", " ", " ", " ", " "},
-                             {" ", " ", " ", " ", " ", " ", " ", " ", " "}}
 
         For BOLT = 0 To 4
 
@@ -273,6 +373,7 @@ Module Minigame
                 Next
 
                 Dim SegementStart As Integer = Int(Rnd() * 5)
+                barHeights(BOLT) = SegementStart
 
                 For segment = SegementStart To SegementStart + 4
 
@@ -291,30 +392,41 @@ Module Minigame
 
             End While
 
-            For i = 0 To 8
-                Console.Write(bars(BOLT, i))
-            Next
-            Console.WriteLine()
         Next
 
-        Dim selected_bolt As Integer = 2
+        While Not complete
 
-        While True
+            Console.Clear()
+
+            printBolts()
+
             Dim input As ConsoleKeyInfo = Console.ReadKey()
 
             Select Case input.Key
                 Case 38
                     ' up
                     Console.WriteLine("up")
+
+                    If barHeights(selected_bolt) > 0 Then
+                        barHeights(selected_bolt) -= 1
+                        shiftBolt(selected_bolt, -1)
+                    End If
+
                     Exit Select
                 Case 40
                     ' down
                     Console.WriteLine("down")
+
+                    If barHeights(selected_bolt) < 4 Then
+                        barHeights(selected_bolt) += 1
+                        shiftBolt(selected_bolt, 1)
+                    End If
+
                     Exit Select
                 Case 39
                     ' right
                     If selected_bolt < 4 Then
-                        selected_bolt += 1
+                        selected_bolt += 1.0
                     End If
                     Exit Select
                 Case 37
@@ -325,7 +437,26 @@ Module Minigame
                     Exit Select
             End Select
 
-            Console.WriteLine(selected_bolt)
+            complete = True
+
+            For i = 0 To 4
+                If bars(i, 4) <> "2" Then
+                    complete = False
+                End If
+            Next
+
+            If complete Then
+                Console.Clear()
+                printBolts()
+
+                Console.WriteLine("
+Well done! you have completed the puzzle!
+Press any key to continue")
+
+                Console.ReadKey()
+
+            End If
+
         End While
 
     End Sub
