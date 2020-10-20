@@ -1,38 +1,47 @@
 Imports System
 Module Module1
 
-    Dim makingChoice As Boolean = True
-    Dim CR As String = "mainroom"
-    Dim px As Integer = 3
-    Dim py As Integer = 3
+    Dim makingChoice As Boolean
+    Dim CR As String
+    Dim px As Integer
+    Dim py As Integer
+    Dim PrevX As Integer
+    Dim PrevY As Integer
 
     Dim ROOMS As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
 
     ' room format: room as 7x7 array, bottom row as connecting room ids
 
-    Dim MAINROOM As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "2", "0", "0", "0"},
-                             {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddleroom", "placeholder1", "", "nothing", "", "", ""}
-        }
+    Dim MAINROOM As Array
+    Dim RIDDLEROOM As Array
+    Dim TOLOCKER As Array
+    Dim LOCKER As Array
+    Dim RIDDLERSLAIR As Array
+    Dim VICTORY As Array
+    Dim KEYCODE As Array
+    Dim PLINTH As Array
+    Dim toExit As Boolean
+    Sub resetGame()
 
-    Dim RIDDLEROOM As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "0"},
-                               {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "s", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"nothing", "mainroom", "", "riddlerslair", "", "", ""}
-        }
+        toExit = False
 
-    Dim PLACEHOLDER1 As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "0", "0", "0", "1"},
-                                 {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"mainroom", "nothing", "", "", "", "", ""}
-        }
+        makingChoice = True
+        CR = "mainroom"
+        px = 3
+        py = 3
+        PrevX = 3
+        PrevY = 3
 
-    Dim RIDDLERSLAIR As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "p"},
-                                 {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"nothing", "keycode", "riddleroom", "victory", "", "", ""}
-        }
+        MAINROOM = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "2", "0", "0", "0"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddleroom", "tolocker", "plinth", "nothing", "", "", ""}}
+        RIDDLEROOM = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "0"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "s", "0", "0", "1"}, {"1", "1", "1", "k", "1", "1", "1"}, {"nothing", "mainroom", "nothing", "riddlerslair", "", "", ""}}
+        TOLOCKER = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"mainroom", "nothing", "locker", "nothing", "", "", ""}}
+        LOCKER = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "o", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "T", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"riddlerslair", "nothing", "nothing", "tolocker", "", "", ""}}
+        RIDDLERSLAIR = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "p"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "k", "1", "1", "1"}, {"nothing", "keycode", "riddleroom", "victory", "", "", ""}}
+        VICTORY = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"nothing", "nothing", "riddlerslair", "nothing", "", "", ""}}
+        KEYCODE = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "o", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddlerslair", "nothing", "nothing", "nothing", "", "", ""}}
+        PLINTH = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "B", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "0", "1", "1", "1"}, {"nothing", "nothing", "nothing", "mainroom", "", "", ""}}
 
-    Dim VICTORY As Array = {{"1", "1", "1", "0", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"},
-                         {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"nothing", "nothing", "riddlerslair", "nothing", "", "", ""}
-        }
-
-    Dim KEYCODE As Array = {{"1", "1", "1", "1", "1", "1", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"0", "0", "0", "0", "0", "0", "1"},
-                            {"1", "0", "0", "0", "0", "0", "1"}, {"1", "0", "0", "0", "0", "0", "1"}, {"1", "1", "1", "1", "1", "1", "1"}, {"riddlerslair", "nothing", "nothing", "nothing", "", "", ""}
-        }
+    End Sub
 
     Function printRoom(ByVal Room As Array)
 
@@ -49,8 +58,16 @@ Module Module1
                         Console.BackgroundColor = ConsoleColor.Red
                     Case "o"
                         Console.BackgroundColor = ConsoleColor.Yellow
+                    Case "A"
+                        Console.BackgroundColor = ConsoleColor.Yellow
                     Case "p"
                         Console.BackgroundColor = ConsoleColor.Gray
+                    Case "k"
+                        Console.BackgroundColor = ConsoleColor.Cyan
+                    Case "B"
+                        Console.BackgroundColor = ConsoleColor.Cyan
+                    Case "N"
+                        Console.BackgroundColor = ConsoleColor.DarkGray
                 End Select
                 Console.Write("  ")
             Next
@@ -61,6 +78,9 @@ Module Module1
     Function handlePlayerMovement(ByVal currentRoom As Array, ByVal keyPress As Char)
 
         currentRoom(py, px) = "0"
+
+        PrevX = px
+        PrevY = py
 
         Select Case keyPress
             Case "a"
@@ -101,31 +121,222 @@ Module Module1
                 End If
         End Select
 
+        Console.ForegroundColor = ConsoleColor.Green
         If currentRoom(py, px) = "p" Then
-            Console.ForegroundColor = ConsoleColor.Green
-            Console.WriteLine("You have come across a puzzle! On completion, you will gain access to the room ahead!")
+            Console.WriteLine("You have come across a puzzle! On completion, you will gain access to the room ahead! (any key to move on)")
             Console.ReadKey()
             Minigame.startGame()
+        ElseIf currentRoom(py, px) = "k" Then
+            Console.WriteLine("You have happened upon a keycode lock! complete this to gain access to the next room (any key to move on)")
+            Console.ReadKey()
+            Select Case CR
+                Case "riddleroom"
+                    UserCode.getKeyCode("1912")
+                Case "riddlerslair"
+                    UserCode.getKeyCode("5834")
+            End Select
+            If Not UserCode.correct Then
+                px = PrevX
+                py = PrevY
+            End If
+        ElseIf currentRoom(py, px) = "T" Then
+            Console.Write("You have fallen into a pit!" & vbCrLf & "Roll a Dice to escape! if the number rolled is above 2, you will escape, else you will die!" & vbCrLf & "Press any key to roll " & vbCrLf & ">")
+            Randomize()
+            Console.ReadKey()
+            If Int(Rnd() * 7) > 2 Then
+                Console.Clear()
+                Console.Write("The number you rolled was greater than 3! you managed to pull yourself free of the pit" & vbCrLf & "Press Any key to continue" & vbCrLf & "> ")
+                Console.ReadKey()
+            Else
+                Console.Clear()
+                Console.Write("The number you rolled was lower than 3!" & vbCrLf & "You were unable to pull yourself free of the pit and so starved to death!" & vbCrLf & "Press Any key to continue" & vbCrLf & "> ")
+                Console.ReadKey()
+                CR = "mainroom"
+                MAINROOM(3, 3) = "2"
+                px = 3
+                py = 3
+                PrevX = 3
+                PrevY = 3
+                Exit Function
+            End If
+        ElseIf currentRoom(py, px) = "o" Then
+            Console.WriteLine("you found a chest")
+            Select Case CR
+                Case "locker"
+                    Inventory.addItem("1912", "keycode")
+                    Inventory.addItem("sword", "weapon")
+                Case "keycode"
+                    Inventory.addItem("dagger", "weapon")
+            End Select
+            Console.ReadKey()
+        End If
+
+        If CR = "victory" Then
+            Console.Clear()
+            Console.ForegroundColor = ConsoleColor.Cyan
+            Console.WriteLine("Congratulations! you were able to escape the dungeon!")
+            Console.Write("Would you like to restart(r) or exit(e) the game?" & vbCrLf & "> ")
+            Dim userIn As Char
+            ' logic for replaying the game
+            While userIn <> "r" And userIn <> "e"
+                Console.ForegroundColor = ConsoleColor.Black
+                userIn = LCase(Console.ReadKey().KeyChar)
+            End While
+
+            Console.ForegroundColor = ConsoleColor.Cyan
+
+
+            Select Case userIn
+                Case "r"
+                    Console.WriteLine("Restarting Game")
+                    Threading.Thread.Sleep(1000)
+                    resetGame()
+                    Console.Clear()
+                    printRoom(MAINROOM)
+                    currentRoom = MAINROOM
+                    CR = "mainroom"
+                    MAINROOM(3, 3) = "2"
+                Case "e"
+                    toExit = True
+            End Select
         End If
 
         currentRoom(py, px) = "2"
 
+        If CR = "plinth" And currentRoom(3, 3) = "B" Then
+            Console.Clear()
+            printRoom(currentRoom)
+            Console.BackgroundColor = ConsoleColor.Black
+            Console.WriteLine("You have entered the Plinth room!
+There is a troll sleeping in the corner of the room, guarding the plinth and the final door keycode!
+You can choose one of two options:
+    1 - Kill the troll in its sleep (30% success rate)
+    2 - Sneak to the plinth and take the keycode (70% chance to wake the troll and engage in combat)
+")
+            Dim userIn As String
+            While LCase(userIn) <> "1" And LCase(userIn) <> "2"
+                Console.Write("> ")
+                userIn = Console.ReadKey().KeyChar.ToString
+            End While
+
+            Randomize()
+
+            Select Case userIn
+                Case "1"
+                    If Int(Rnd() * 11) - 7 Then
+                        Console.WriteLine("You were able to kill the troll in its sleep!
+This allows you to retrieve the keycode from the plinth!
+You head back to the starting room and the plinth room seals behind you!
+")
+                        Inventory.addItem("5834", "keycode")
+
+                        Console.ReadKey()
+
+                        px = 3
+                        py = 1
+                        PrevX = 3
+                        PrevY = 1
+                        CR = "mainroom"
+                        currentRoom = MAINROOM
+
+                        currentRoom(py, px) = "2"
+                        MAINROOM(0, px) = "1"
+
+                        Console.ReadKey()
+
+                    Else
+                        Console.WriteLine("As you sneak towards the troll, it senses your approach, quickly wakes and kills you.")
+                        px = 3
+                        py = 3
+                        PrevX = 3
+                        PrevY = 3
+                        CR = "mainroom"
+                        currentRoom = MAINROOM
+
+                        Console.ReadKey()
+
+                    End If
+                Case "2"
+                    ' 30% chance to wake troll and engage in combat (further 40% chance of victory)
+                    Console.WriteLine("You edge towards the plinth slowly as no to wake the troll..")
+                    If Int(Rnd() * 11) - 7 Then
+                        Console.WriteLine("It was successful, you take the keycode from the plinth and hastily retreat! The room seals behind you!
+")
+                        Inventory.addItem("5834", "keycode")
+
+                        px = 3
+                        py = 1
+                        PrevX = 3
+                        PrevY = 1
+                        CR = "mainroom"
+                        currentRoom = MAINROOM
+
+                        currentRoom(py, px) = "2"
+                        MAINROOM(0, px) = "1"
+
+                        Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
+                        Console.ReadKey()
+
+                    Else
+                        Console.WriteLine("It senses you and wakes, you must now engage in combat! Press any key to test your luck!")
+                        Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
+                        Console.ReadKey()
+
+                        If Int(Rnd() * 6 < 3) Then
+                            Console.WriteLine("You were able to subdue the troll and now grab the keycode from the plinth!
+The plinth room closes behind you")
+
+                            Inventory.addItem("5834", "keycode")
+
+                            px = 3
+                            py = 1
+                            PrevX = 3
+                            PrevY = 1
+                            CR = "mainroom"
+                            currentRoom = MAINROOM
+
+                            currentRoom(py, px) = "2"
+                            MAINROOM(0, px) = "1"
+
+                            Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
+                            Console.ReadKey()
+
+                        Else
+                            Console.WriteLine("The troll overpowered you! You die")
+                            Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
+                            Console.ReadKey()
+                            px = 3
+                            py = 3
+                            PrevX = 3
+                            PrevY = 3
+                            CR = "mainroom"
+                            currentRoom = MAINROOM
+
+                        End If
+                    End If
+            End Select
+        End If
+
+
     End Function
 
     Sub Main()
+
+        resetGame()
+
         ROOMS.Add("mainroom", MAINROOM)
+        ROOMS.Add("plinth", PLINTH)
         ROOMS.Add("riddleroom", RIDDLEROOM)
-        ROOMS.Add("placeholder1", PLACEHOLDER1)
+        ROOMS.Add("tolocker", TOLOCKER)
+        ROOMS.Add("locker", LOCKER)
         ROOMS.Add("riddlerslair", RIDDLERSLAIR)
         ROOMS.Add("keycode", KEYCODE)
         ROOMS.Add("victory", VICTORY)
 
-        Dim toExit As Boolean = False
-
         Console.ForegroundColor = ConsoleColor.Green
         Console.WriteLine("Welcome to the adventure game!" & vbCrLf & vbCrLf & " To play, type 'play'" & vbCrLf & " To Exit, type 'exit' or tap 'e' at any point during the game" & vbCrLf)
 
-        While makingChoice
+                            While makingChoice
             Console.Write("> ")
             Dim chosenOption As String = Console.ReadLine()
 
@@ -149,7 +360,7 @@ Module Module1
             Console.ForegroundColor = ConsoleColor.Green
             Console.Clear()
 
-            Console.WriteLine(vbCrLf & "How To Play" & vbCrLf & "    - Press 'w', 'a', 's', 'd' to Move" & vbCrLf & "    - Press 'e' to exit at any point in the game" & vbCrLf & "    - Press 'i' to access your inventory" & vbCrLf & "    - Press 'o' to open an object" & vbCrLf & "    - Press 'y' or 'n' for options Yes or No respectively" & vbCrLf)
+            Console.WriteLine(vbCrLf & "How To Play" & vbCrLf & "    - Press 'w', 'a', 's', 'd' to Move" & vbCrLf & "    - Press 'e' to exit at any point in the game" & vbCrLf & "    - Press 'i' to access your inventory" & vbCrLf & vbCrLf)
             printRoom(ROOMS.Item(CR))
 
             Console.ForegroundColor = ConsoleColor.Black
@@ -157,6 +368,10 @@ Module Module1
 
             moveTo = (Console.ReadKey()).KeyChar
             handlePlayerMovement(ROOMS.Item(CR), moveTo)
+
+            If LCase(moveTo) = "i" Then
+                Inventory.openInv()
+            End If
 
             If LCase(moveTo) = "e" Then
                 Console.BackgroundColor = ConsoleColor.Black
@@ -205,7 +420,7 @@ Module Minigame
 
     Sub printBolts()
         Console.ForegroundColor = ConsoleColor.Green
-        Console.WriteLine("The Cyan dot hovers under the bolt selected, to scroll across the bolts, press the left adn right arrow keys!" & vbCrLf & "To complete the puzzle, all the red parts must be in line with the green dot!" & vbCrLf & "In order to move a bolt up or down, use the up and down arrow keys!" & vbCrLf)
+        Console.WriteLine("The Cyan dot hovers under the bolt selected, to scroll across the bolts, press the left and right arrow keys!" & vbCrLf & "To complete the puzzle, all the red parts must be in line with the green dot!" & vbCrLf & "In order to move a bolt up or down, use the up and down arrow keys!" & vbCrLf)
         For row = 0 To 8
             Console.Write("  ")
             For bolt = 0 To 4
@@ -280,22 +495,18 @@ Module Minigame
                     If barHeights(selected_bolt) > 0 Then
                         shiftBolt(selected_bolt, -1)
                     End If
-                    Exit Select
                 Case 40 ' down
                     If barHeights(selected_bolt) < 4 Then
                         shiftBolt(selected_bolt, 1)
                     End If
-                    Exit Select
                 Case 39 ' right
                     If selected_bolt < 4 Then
                         selected_bolt += 1.0
                     End If
-                    Exit Select
                 Case 37 ' left
                     If selected_bolt > 0 Then
                         selected_bolt -= 1
                     End If
-                    Exit Select
             End Select
 
             complete = True
@@ -316,4 +527,88 @@ Module Minigame
             End If
         End While
     End Sub
+End Module
+
+Module UserCode
+
+    Public correct As Boolean = False
+    Sub getKeyCode(ByRef password As String)
+        correct = False
+        Dim current_input As String = ""
+        Dim entering As Boolean = True
+        Dim input As String
+
+        While entering
+            Console.ForegroundColor = ConsoleColor.Green
+            Console.Clear()
+            Console.WriteLine("Enter KeyCode To Pass" & vbCrLf & "You may type 'exit' to leave without completing")
+            Console.Write("> ")
+
+            input = Console.ReadLine()
+
+            If input = password Then
+                correct = True
+                entering = False
+                Console.Write(vbCrLf & "Password Correct" & vbCrLf & "Press any key to exit" & vbCrLf & "> ")
+                Console.ReadKey()
+
+            ElseIf input.ToLower() = "exit" Then
+                entering = False
+            End If
+            Console.Clear()
+        End While
+    End Sub
+End Module
+
+Module Inventory
+
+    Dim codes As Array = {" ", " "}
+    Dim weapons As Array = {" ", " "}
+
+    Sub openInv()
+
+        Console.Clear()
+        Console.ForegroundColor = ConsoleColor.White
+
+        Console.WriteLine(" - [Inventory] -
+
+Key Codes:")
+        For i = 0 To 1
+            Console.WriteLine("    " & codes(i))
+        Next
+        Console.WriteLine(vbCrLf & "Weapons:")
+
+        For i = 0 To 1
+            Console.WriteLine("    " & weapons(i))
+        Next
+        Console.WriteLine()
+
+        Console.Write("Press Any key To Exit Inventory" & vbCrLf & "> ")
+
+        Console.ReadKey()
+        Console.Clear()
+
+    End Sub
+
+    Sub addItem(ByVal value As String, ByVal type As String)
+
+        Select Case type
+            Case "keycode"
+                If codes(0) = " " Then
+                    codes(0) = value
+                Else
+                    codes(1) = value
+                End If
+            Case "weapon"
+                If weapons(0) = " " Then
+                    weapons(0) = value
+                Else
+                    weapons(1) = value
+                End If
+        End Select
+
+        Console.WriteLine(type & " [" & value & "] added to inventory!")
+
+    End Sub
+
 End Module
