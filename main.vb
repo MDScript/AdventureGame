@@ -12,15 +12,15 @@ Module Module1
 
     ' room format: room as 7x7 array, bottom row as connecting room ids
 
-    Dim MAINROOM As Array
-    Dim RIDDLEROOM As Array
-    Dim TOLOCKER As Array
-    Dim LOCKER As Array
-    Dim RIDDLERSLAIR As Array
-    Dim VICTORY As Array
-    Dim KEYCODE As Array
-    Dim PLINTH As Array
-    Dim toExit As Boolean
+    Public MAINROOM As Array
+    Public RIDDLEROOM As Array
+    Public TOLOCKER As Array
+    Public LOCKER As Array
+    Public RIDDLERSLAIR As Array
+    Public VICTORY As Array
+    Public KEYCODE As Array
+    Public PLINTH As Array
+    Public toExit As Boolean
     Sub resetGame()
 
         toExit = False
@@ -224,7 +224,7 @@ You can choose one of two options:
             Select Case userIn
                 Case "1"
                     If Int(Rnd() * 11) - 7 Then
-                        Console.WriteLine("You were able to kill the troll in its sleep!
+                        Console.WriteLine(vbCrLf & "You were able to kill the troll in its sleep!
 This allows you to retrieve the keycode from the plinth!
 You head back to the starting room and the plinth room seals behind you!
 ")
@@ -242,10 +242,8 @@ You head back to the starting room and the plinth room seals behind you!
                         currentRoom(py, px) = "2"
                         MAINROOM(0, px) = "1"
 
-                        Console.ReadKey()
-
                     Else
-                        Console.WriteLine("As you sneak towards the troll, it senses your approach, quickly wakes and kills you.")
+                        Console.WriteLine(vbCrLf & "As you sneak towards the troll, it senses your approach, quickly wakes and kills you.")
                         px = 3
                         py = 3
                         PrevX = 3
@@ -258,9 +256,9 @@ You head back to the starting room and the plinth room seals behind you!
                     End If
                 Case "2"
                     ' 30% chance to wake troll and engage in combat (further 40% chance of victory)
-                    Console.WriteLine("You edge towards the plinth slowly as no to wake the troll..")
+                    Console.WriteLine(vbCrLf & "You edge towards the plinth slowly as no to wake the troll..")
                     If Int(Rnd() * 11) - 7 Then
-                        Console.WriteLine("It was successful, you take the keycode from the plinth and hastily retreat! The room seals behind you!
+                        Console.WriteLine(vbCrLf & "It was successful, you take the keycode from the plinth and hastily retreat! The room seals behind you!
 ")
                         Inventory.addItem("5834", "keycode")
 
@@ -278,12 +276,12 @@ You head back to the starting room and the plinth room seals behind you!
                         Console.ReadKey()
 
                     Else
-                        Console.WriteLine("It senses you and wakes, you must now engage in combat! Press any key to test your luck!")
+                        Console.WriteLine(vbCrLf & "It senses you and wakes, you must now engage in combat! Press any key to test your luck!")
                         Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
                         Console.ReadKey()
 
                         If Int(Rnd() * 6 < 3) Then
-                            Console.WriteLine("You were able to subdue the troll and now grab the keycode from the plinth!
+                            Console.WriteLine(vbCrLf & "You were able to subdue the troll and now grab the keycode from the plinth!
 The plinth room closes behind you")
 
                             Inventory.addItem("5834", "keycode")
@@ -302,7 +300,7 @@ The plinth room closes behind you")
                             Console.ReadKey()
 
                         Else
-                            Console.WriteLine("The troll overpowered you! You die")
+                            Console.WriteLine(vbCrLf & "The troll overpowered you! You die")
                             Console.Write(vbCrLf & "Any key to continue" & vbCrLf & "> ")
                             Console.ReadKey()
                             px = 3
@@ -336,7 +334,7 @@ The plinth room closes behind you")
         Console.ForegroundColor = ConsoleColor.Green
         Console.WriteLine("Welcome to the adventure game!" & vbCrLf & vbCrLf & " To play, type 'play'" & vbCrLf & " To Exit, type 'exit' or tap 'e' at any point during the game" & vbCrLf)
 
-                            While makingChoice
+        While makingChoice
             Console.Write("> ")
             Dim chosenOption As String = Console.ReadLine()
 
